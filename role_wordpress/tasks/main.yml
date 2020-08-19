@@ -6,12 +6,6 @@
     owner: centos
     state: directory
 
-# Example git checkout from Ansible Playbooks
-- git:
-    repo: 'https://github.com/Mohamedcond/wordpress.git'
-    dest: "/home/centos/folder"
-    version: master
-
 - name: Create a network
   docker_network:
     name: network_wordpress

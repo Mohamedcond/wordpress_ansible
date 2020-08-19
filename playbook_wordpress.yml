@@ -7,6 +7,9 @@
     pip_install_packages:
       - name: docker
 
+    pip_package: python-pip
+    pip_executable: pip
+
   pre_tasks:
     - name: upgrade all packages
       yum:
