@@ -1,0 +1,51 @@
+---
+# tasks file for role_wordpress
+- name: Création d'un fichier
+  file:
+    path: "/home/centos/folder"
+    owner: centos
+    state: directory
+
+# Example git checkout from Ansible Playbooks
+- git:
+    repo: 'https://github.com/Mohamedcond/wordpress.git'
+    dest: "/home/centos/folder"
+    version: master
+
+- name: Create a network
+  docker_network:
+    name: network_wordpress
+
+- name: Create a volume
+  docker_volume:
+    name: volume_one
+
+- name: Creation d'un conteneur Mysql
+  docker_container:
+    name: container_mysql
+    image: mysql:5.7
+    state: started
+    networks:
+      - name: network_wordpress
+    volumes:
+      - "db:/var/lib/mysql"
+    env:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+
+- name: Creation d'un conteneur wordpress
+  docker_container:
+    name: container_wordpress
+    image: wordpress
+    state: started
+    networks:
+      - name: network_wordpress
+    volumes:
+      - wordpress:/var/www/html
+    env:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
