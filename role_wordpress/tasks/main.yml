@@ -38,8 +38,10 @@
       - name: network_wordpress
     volumes:
       - wordpress:/var/www/html
+    ports:
+      - "8080:80"
     env:
-      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_HOST: container_mysql 
       WORDPRESS_DB_USER: exampleuser
       WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_DB_NAME: exampledb
