@@ -1,6 +1,6 @@
 ---
 # tasks file for role_wordpress
-- name: Création d'un fichier
+- name: Create a file
   file:
     path: "/home/centos/folder"
     owner: centos
@@ -14,7 +14,7 @@
   docker_volume:
     name: volume_one
 
-- name: Creation d'un conteneur Mysql
+- name: Create a container Mysql
   docker_container:
     name: container_mysql
     image: mysql:5.7
@@ -29,7 +29,7 @@
       MYSQL_PASSWORD: examplepass
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
 
-- name: Creation d'un conteneur wordpress
+- name: Create a container wordpress
   docker_container:
     name: container_wordpress
     image: wordpress
