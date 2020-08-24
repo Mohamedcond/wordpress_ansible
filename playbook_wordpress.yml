@@ -3,6 +3,11 @@
   gather_facts: true
   become: true
   
+  vars_files:
+    - "role_wordpress/vars/secret.yml"
+    - "role_wordpress/vars/main.yml" 
+
+
   vars:
     pip_install_packages:
       - name: docker

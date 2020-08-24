@@ -6,6 +6,33 @@
     owner: centos
     state: directory
 
+- name: load the source code in github
+  git:
+    repo: "https://github.com/docker-library/wordpress.git"
+    dest: "/home/centos/folder"
+    version: "master"
+
+- name: Log into DockerHub
+  docker_login:
+    username: "{{ dockerhub_login_vault }}"
+    password: "{{ dockerhub_pwd_vault }}"
+
+- name: Build an image and push it to a private repo
+  docker_image:
+    build:
+      path: "/home/centos/folder/php7.2/apache/"
+    name: "{{ dockerhub_login_vault }}/app_image"
+    tag: v1
+    push: yes
+    source: build
+
+
+- name: Restart service docker
+  service:
+    name: docker
+    state: restarted
+
+
 - name: Create a network
   docker_network:
     name: network_wordpress
@@ -29,10 +56,11 @@
       MYSQL_PASSWORD: examplepass
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
 
-- name: Create a container wordpress
+
+- name: create container wordpress
   docker_container:
     name: container_wordpress
-    image: wordpress
+    image: "{{ dockerhub_login_vault }}/app_image:v1"
     state: started
     networks:
       - name: network_wordpress
@@ -45,3 +73,5 @@
       WORDPRESS_DB_USER: exampleuser
       WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_DB_NAME: exampledb
+
+
